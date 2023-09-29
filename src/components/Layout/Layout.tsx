@@ -9,7 +9,8 @@ const layoutStyle: React.CSSProperties = {
   width: '100vw',
   height: '100vh',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  color: '#fff',
 };
 
 const headerStyle: React.CSSProperties = {
@@ -18,7 +19,7 @@ const headerStyle: React.CSSProperties = {
   width: '100vw',
   textAlign: 'center',
   color: '#fff',
-  height: 120,
+  height: 200,
   paddingInline: 50,
   position: 'fixed',
   zIndex: 1,
@@ -28,10 +29,16 @@ const headerStyle: React.CSSProperties = {
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
-  padding: '200px 50px',
-  color: '#fff',
+  width: '100vw',
+  height: '100vh',
+  padding: '0 50px',
+  position: 'fixed',
+  background: '#fff',
   flex: 1,
-  marginTop: 120
+  margin: 'auto',
+  marginTop: 50,
+  display: 'flex',
+  alignItems: 'center'
 };
 
 export const Layout: React.FC = () => {
