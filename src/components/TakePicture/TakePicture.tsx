@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from 'antd'
 import axios from 'axios'
+import './TakePicture.css'
 
 const TakePicture: React.FC = () => {
   const [image, setImage] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [isCameraOn, setIsCameraOn] = useState(false)
 
   const startCamera = async () => {
     try {
@@ -27,6 +29,7 @@ const TakePicture: React.FC = () => {
         tracks.forEach((track) => track.stop())
         videoRef.current.srcObject = null
       }
+      setIsCameraOn(false)
     }
   }
 
@@ -64,59 +67,29 @@ const TakePicture: React.FC = () => {
     }
   }, [])
 
+  const toggleCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      stopCamera()
+    } else {
+      startCamera()
+      setIsCameraOn(true)
+    }
+  }
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: '#fff'
-      }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-        <div
-          style={{
-            border: '2px solid #1890ff',
-            height: '303px',
-            borderRadius: '10px',
-            marginBottom: '2px',
-            marginRight: '10px',
-            position: 'relative'
-          }}>
-          <video
-            ref={videoRef}
-            style={{ width: '400px', height: '300px', borderRadius: '9px', position: 'relative' }}
-          />
+    <div className="container">
+      <div className="videoContainer">
+        <div className="videoFrame">
+          <video ref={videoRef} className="video" />
         </div>
-        <div
-          style={{
-            width: '400px',
-            height: '303px',
-            border: '2px solid #1890ff',
-            borderRadius: '10px',
-            position: 'relative'
-          }}>
-          {image && (
-            <img
-              src={image}
-              alt="Снимок"
-              style={{
-                objectFit: 'contain',
-                width: '100%',
-                minWidth: '400px',
-                height: '100%',
-                borderRadius: '8px'
-              }}
-            />
-          )}
+        <div className="imageContainer">
+          {image && <img src={image} alt="Снимок" className="image" />}
           <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={startCamera} style={{ marginRight: '10px' }}>
-          Включить камеру
-        </Button>
-        <Button onClick={stopCamera} style={{ marginRight: '10px' }}>
-          Отключить камеру
+      <div className="buttonsContainer">
+        <Button onClick={toggleCamera}>
+          {isCameraOn ? 'Отключить камеру' : 'Включить камеру'}
         </Button>
         <Button onClick={captureAndUpload}>Сделать снимок</Button>
       </div>

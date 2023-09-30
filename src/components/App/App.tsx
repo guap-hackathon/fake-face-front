@@ -4,6 +4,7 @@ import { Layout } from '../Layout'
 import { VideoPage } from '../../pages/video/video-page'
 import { PhotoPage } from '../../pages/photo/photo-page'
 import { MainPage } from '../../pages/main/main-page'
+import './App.css'
 
 function App() {
   return (
