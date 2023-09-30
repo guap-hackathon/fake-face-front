@@ -1,13 +1,13 @@
 import { Layout } from 'antd'
-import DragAndDrop from '../../components/UploadImage/UploadImage'
+import TakePicture from '../../components/TakePicture/TakePicture'
 
 const { Content } = Layout
 
-export const MainPage = () => {
+export const PhotoPage = () => {
   return (
     <Layout>
       <Content>
-        <DragAndDrop />
+        <TakePicture />
       </Content>
     </Layout>
   )

@@ -16,9 +16,14 @@
     "antd": "^5.9.4",
     "effector": "^22.8.7",
     "effector-react": "^22.5.4",
+    "axios": "^1.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-dropzone": "^14.2.3",
+    "react-router-dom": "^6.3.0",
+    "react-webcam": "^7.1.1",
+    "sharp": "^0.32.6",
+    "styled-components": "^6.0.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
