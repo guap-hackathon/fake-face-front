@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { Space, Button } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Space, Button } from 'antd'
+import { Link, useLocation } from 'react-router-dom'
 
 export const HeaderComponent: React.FC = () => {
-  const location = useLocation();
-  const [isPhotoPage, setIsPhotoPage] = useState(location.pathname === '/');
-  const [isLivePage, setIsLivePage] = useState(location.pathname === '/live');
-  const [isTakePicturePage, setIsTakePicturePage] = useState(location.pathname === '/photo');
+  const location = useLocation()
+  const [isPhotoPage, setIsPhotoPage] = useState(location.pathname === '/')
+  const [isLivePage, setIsLivePage] = useState(location.pathname === '/live')
+  const [isTakePicturePage, setIsTakePicturePage] = useState(location.pathname === '/photo')
 
   // Обработчики нажатия для кнопок
   const handlePhotoButtonClick = () => {
-    setIsPhotoPage(true);
-    setIsLivePage(false);
-    setIsTakePicturePage(false);
-  };
+    setIsPhotoPage(true)
+    setIsLivePage(false)
+    setIsTakePicturePage(false)
+  }
 
   const handleLiveButtonClick = () => {
-    setIsPhotoPage(false);
-    setIsLivePage(true);
-    setIsTakePicturePage(false);
-  };
+    setIsPhotoPage(false)
+    setIsLivePage(true)
+    setIsTakePicturePage(false)
+  }
 
   const handleTakePictureButtonClick = () => {
-    setIsPhotoPage(false);
-    setIsLivePage(false);
-    setIsTakePicturePage(true);
-  };
-  
+    setIsPhotoPage(false)
+    setIsLivePage(false)
+    setIsTakePicturePage(true)
+  }
+
   return (
     <Space direction="vertical">
       <div
@@ -76,10 +76,10 @@ export const HeaderComponent: React.FC = () => {
                 x2="77.2404"
                 y2="38.3236"
                 gradientUnits="userSpaceOnUse">
-                <stop stop-color="#45C3F3" />
-                <stop offset="0.5" stop-color="#1671C2" />
-                <stop offset="0.959876" stop-color="#2056AE" />
-                <stop offset="1" stop-color="#2056AE" />
+                <stop stopColor="#45C3F3" />
+                <stop offset="0.5" stopColor="#1671C2" />
+                <stop offset="0.959876" stopColor="#2056AE" />
+                <stop offset="1" stopColor="#2056AE" />
               </linearGradient>
               <linearGradient
                 id="paint1_linear_527_51894"
@@ -88,27 +88,35 @@ export const HeaderComponent: React.FC = () => {
                 x2="38.617"
                 y2="0.000282786"
                 gradientUnits="userSpaceOnUse">
-                <stop stop-color="#2056AE" />
-                <stop offset="0.25" stop-color="#2056AE" />
-                <stop offset="0.280093" stop-color="#2056AE" />
-                <stop offset="0.625" stop-color="#A32B9B" />
-                <stop offset="1" stop-color="#ED1443" />
+                <stop stopColor="#2056AE" />
+                <stop offset="0.25" stopColor="#2056AE" />
+                <stop offset="0.280093" stopColor="#2056AE" />
+                <stop offset="0.625" stopColor="#A32B9B" />
+                <stop offset="1" stopColor="#ED1443" />
               </linearGradient>
             </defs>
           </svg>
         </Link>
       </div>
       <Space direction="horizontal">
-      <Link to="/">
-        <Button type={isPhotoPage ? 'primary' : 'default'} onClick={handlePhotoButtonClick}>Photo</Button>
-      </Link>
-      <Link to="/live">
-        <Button type={isLivePage ? 'primary' : 'default'} onClick={handleLiveButtonClick}>Live</Button>
-      </Link>
-      <Link to="/photo">
-        <Button type={isTakePicturePage ? 'primary' : 'default'} onClick={handleTakePictureButtonClick}>Take picture</Button>
-      </Link>
-    </Space>
+        <Link to="/">
+          <Button type={isPhotoPage ? 'primary' : 'default'} onClick={handlePhotoButtonClick}>
+            Photo
+          </Button>
+        </Link>
+        <Link to="/live">
+          <Button type={isLivePage ? 'primary' : 'default'} onClick={handleLiveButtonClick}>
+            Live
+          </Button>
+        </Link>
+        <Link to="/photo">
+          <Button
+            type={isTakePicturePage ? 'primary' : 'default'}
+            onClick={handleTakePictureButtonClick}>
+            Take picture
+          </Button>
+        </Link>
+      </Space>
     </Space>
   )
 }

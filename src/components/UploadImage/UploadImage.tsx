@@ -1,49 +1,51 @@
-import React, { useState } from 'react';
-import { Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import './DragAndDrop.css';
+import React, { useState } from 'react'
+import { Upload, Button, UploadProps } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
+import axios from 'axios'
+import './DragAndDrop.css'
 
 const DragAndDrop: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null);
-  const [responseText, setResponseText] = useState<string>('');
+  const [image, setImage] = useState<string | null>(null)
+  const [responseText, setResponseText] = useState<string>('')
 
   const handleImageUpload = (file: File) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
 
     reader.onloadend = () => {
       if (reader.result && typeof reader.result === 'string') {
-        setImage(reader.result);
-        sendImageToBackend(reader.result);
+        setImage(reader.result)
+        sendImageToBackend(reader.result)
       }
-    };
+    }
 
-    reader.readAsDataURL(file);
-  };
+    reader.readAsDataURL(file)
+  }
+
+  const handleChange: UploadProps['onChange'] = (info) => {
+    console.log('INFO', info)
+  }
 
   const sendImageToBackend = async (imageData: string) => {
     try {
-      const response = await axios.post('URL_БЭКА', {
-        imageData: imageData,
-      });
+      const response = await axios.post('/api/validate-face', imageData)
 
-      setResponseText(response.data.text);
+      setResponseText(response.data.text)
     } catch (error: any) {
       if (error.response) {
-        setResponseText(error.response.data.text || 'Ошибка на сервере');
+        setResponseText(error.response.data.text || 'Ошибка на сервере')
       } else if (error.request) {
-        setResponseText('Ответ от сервера не получен');
+        setResponseText('Ответ от сервера не получен')
       } else {
-        setResponseText('Ошибка настройки запроса');
+        setResponseText('Ошибка настройки запроса')
       }
-      console.error('Ошибка при отправке изображения на бэкенд:', error);
+      console.error('Ошибка при отправке изображения на бэкенд:', error)
     }
-  };
+  }
 
   const handleBackClick = () => {
-    setImage(null);
-    setResponseText('');
-  };
+    setImage(null)
+    setResponseText('')
+  }
 
   return (
     <div style={{ padding: '20px', background: '#fff', margin: 'auto', textAlign: 'center' }}>
@@ -58,9 +60,11 @@ const DragAndDrop: React.FC = () => {
       ) : (
         <Upload.Dragger
           beforeUpload={(file) => {
-            handleImageUpload(file);
-            return false;
+            handleImageUpload(file)
+            return true
           }}
+          onChange={handleChange}
+          multiple
           showUploadList={false}
           style={{
             height: '400px',
@@ -71,9 +75,8 @@ const DragAndDrop: React.FC = () => {
             justifyContent: 'center',
             alignItems: 'center',
             textAlign: 'center',
-            marginBottom: '20px',
-          }}
-        >
+            marginBottom: '20px'
+          }}>
           <p>Загрузите изображение</p>
           <p>или</p>
           <p>Перетащите его сюда</p>
@@ -81,7 +84,7 @@ const DragAndDrop: React.FC = () => {
         </Upload.Dragger>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DragAndDrop;
+export default DragAndDrop
