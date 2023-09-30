@@ -1,87 +1,41 @@
-import React, { useState } from 'react';
-import { Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import './DragAndDrop.css';
+import { InboxOutlined } from '@ant-design/icons';
+import type { UploadProps } from 'antd';
+import { message, Upload } from 'antd';
+import React from 'react';
 
-const DragAndDrop: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null);
-  const [responseText, setResponseText] = useState<string>('');
+const { Dragger } = Upload;
 
-  const handleImageUpload = (file: File) => {
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      if (reader.result && typeof reader.result === 'string') {
-        setImage(reader.result);
-        sendImageToBackend(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
-
-  const sendImageToBackend = async (imageData: string) => {
-    try {
-      const response = await axios.post('URL_БЭКА', {
-        imageData: imageData,
-      });
-
-      setResponseText(response.data.text);
-    } catch (error: any) {
-      if (error.response) {
-        setResponseText(error.response.data.text || 'Ошибка на сервере');
-      } else if (error.request) {
-        setResponseText('Ответ от сервера не получен');
-      } else {
-        setResponseText('Ошибка настройки запроса');
-      }
-      console.error('Ошибка при отправке изображения на бэкенд:', error);
+const props: UploadProps = {
+  name: 'file',
+  multiple: true,
+  action: '/app/check-face',
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
     }
-  };
-
-  const handleBackClick = () => {
-    setImage(null);
-    setResponseText('');
-  };
-
-  return (
-    <div style={{ padding: '20px', background: '#fff', margin: 'auto', textAlign: 'center' }}>
-      {image ? (
-        <div style={{ position: 'relative', display: 'inline-block' }}>
-          <img src={image} alt="Uploaded" style={{ maxWidth: '400px', maxHeight: '400px' }} />
-          <p style={{ marginTop: '20px' }}>{responseText}</p>
-          <Button style={{ marginTop: '20px' }} onClick={handleBackClick}>
-            Назад
-          </Button>
-        </div>
-      ) : (
-        <Upload.Dragger
-          beforeUpload={(file) => {
-            handleImageUpload(file);
-            return false;
-          }}
-          showUploadList={false}
-          style={{
-            height: '400px',
-            minHeight: '400px',
-            border: '2px dashed #ccc',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            textAlign: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <p>Загрузите изображение</p>
-          <p>или</p>
-          <p>Перетащите его сюда</p>
-          <Button icon={<UploadOutlined />}>Выберите файл</Button>
-        </Upload.Dragger>
-      )}
-    </div>
-  );
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  onDrop(e) {
+    console.log('Dropped files', e.dataTransfer.files);
+  },
 };
+
+const DragAndDrop: React.FC = () => (
+  <Dragger {...props}>
+    <p className="ant-upload-drag-icon">
+      <InboxOutlined />
+    </p>
+    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+    <p className="ant-upload-hint">
+      Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+      band files
+    </p>
+  </Dragger>
+);
 
 export default DragAndDrop;
