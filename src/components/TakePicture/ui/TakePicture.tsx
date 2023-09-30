@@ -2,11 +2,10 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Button } from 'antd'
 import axios from 'axios'
 
-const LiveImage: React.FC = () => {
-  const [, setImage] = useState<string | null>(null)
+export const TakePicture: React.FC = () => {
+  const [image, setImage] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const [videoIsStopped, setVideoIsStopped] = useState(false)
 
   const startCamera = async () => {
     try {
@@ -14,8 +13,6 @@ const LiveImage: React.FC = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         videoRef.current.play()
-
-        captureAndUpload()
       }
     } catch (error) {
       console.error('Ошибка при получении видеопотока:', error)
@@ -30,15 +27,10 @@ const LiveImage: React.FC = () => {
         tracks.forEach((track) => track.stop())
         videoRef.current.srcObject = null
       }
-      setVideoIsStopped(true)
-      setImage(null)
     }
   }
 
   const captureAndUpload = () => {
-    if (videoIsStopped) {
-      return
-    }
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d')
@@ -55,8 +47,6 @@ const LiveImage: React.FC = () => {
           .post('URL_БЭКА', { image: capturedImage })
           .then((response) => {
             console.log('Ответ от сервера:', response.data)
-
-            captureAndUpload()
           })
           .catch((error) => {
             console.error('Ошибка при отправке изображения на сервер:', error)
@@ -66,10 +56,7 @@ const LiveImage: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log('Компонент монтируется')
-
     return () => {
-      console.log('Компонент размонтируется')
       stopCamera()
     }
   }, [])
@@ -97,21 +84,39 @@ const LiveImage: React.FC = () => {
             style={{ width: '400px', height: '300px', borderRadius: '9px', position: 'relative' }}
           />
         </div>
-        {/* <div style={{ width: '400px', border: '2px solid #1890ff', borderRadius: '10px', position: 'relative' }}>
-          {image && <img src={image} alt="Снимок" style={{ objectFit: 'contain', width: '100%', minWidth: '400px', height: '100%', borderRadius: '8px' }} />}
+        <div
+          style={{
+            width: '400px',
+            height: '303px',
+            border: '2px solid #1890ff',
+            borderRadius: '10px',
+            position: 'relative'
+          }}>
+          {image && (
+            <img
+              src={image}
+              alt="Снимок"
+              style={{
+                objectFit: 'contain',
+                width: '100%',
+                minWidth: '400px',
+                height: '100%',
+                borderRadius: '8px'
+              }}
+            />
+          )}
           <canvas ref={canvasRef} style={{ display: 'none' }} />
-        </div> */}
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button onClick={startCamera} style={{ marginRight: '10px' }}>
-          Начать трансляцию
+          Включить камеру
         </Button>
         <Button onClick={stopCamera} style={{ marginRight: '10px' }}>
-          Остановить трансляцию
+          Отключить камеру
         </Button>
+        <Button onClick={captureAndUpload}>Сделать снимок</Button>
       </div>
     </div>
   )
 }
-
-export default LiveImage

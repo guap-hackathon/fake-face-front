@@ -6,7 +6,6 @@ import { HeaderComponent } from '../Header/HeaderComponent'
 const { Header, Content } = AntdLayout
 
 const layoutStyle: React.CSSProperties = {
-  width: '100vw',
   display: 'flex',
   flexDirection: 'column',
   color: '#fff'
@@ -15,7 +14,6 @@ const layoutStyle: React.CSSProperties = {
 const headerStyle: React.CSSProperties = {
   paddingTop: 20,
   background: '#fff',
-  width: '100vw',
   textAlign: 'center',
   color: '#fff',
   height: 200,
@@ -27,11 +25,9 @@ const headerStyle: React.CSSProperties = {
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
-  width: '100vw',
   padding: '0 50px',
   background: '#fff',
   flex: 1,
-  margin: 'auto',
   marginTop: 50,
   display: 'flex',
   alignItems: 'center'

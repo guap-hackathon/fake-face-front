@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import TakePicture from '../../components/TakePicture/TakePicture'
+import { TakePicture } from '../../components/TakePicture'
 
 const { Content } = Layout
 

@@ -8,7 +8,7 @@ import { featureModel } from '../models'
 import { WithFaceStatus } from '../types'
 import { FileList } from './FileList'
 
-const DragAndDrop: React.FC = () => {
+export const DragAndDrop: React.FC = () => {
   const handleChange: UploadProps<WithFaceStatus>['onChange'] = ({ fileList }) => {
     console.log('HANDLE CHANGE INFO', fileList)
     featureModel.actualizedFilesData(fileList)
@@ -55,5 +55,3 @@ const DragAndDrop: React.FC = () => {
     </div>
   )
 }
-
-export default DragAndDrop

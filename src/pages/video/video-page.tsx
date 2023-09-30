@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import LiveImage from '../../components/LiveImage/LiveImage'
+import { LiveImage } from '../../components/LiveImage'
 
 const { Content } = Layout
 
