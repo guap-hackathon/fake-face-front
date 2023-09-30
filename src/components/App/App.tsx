@@ -10,6 +10,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<MainPage />} />
         </Route>
+        <Route path="/profile" element={<div>1231313</div>}></Route>
       </Routes>
     </ErrorBoundary>
   )
