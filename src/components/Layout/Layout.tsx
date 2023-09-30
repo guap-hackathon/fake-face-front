@@ -21,8 +21,6 @@ const headerStyle: React.CSSProperties = {
   color: '#fff',
   height: 200,
   paddingInline: 50,
-  position: 'fixed',
-  zIndex: 1,
   display: 'flex',
   alignItems: 'center'
 }
@@ -31,7 +29,6 @@ const contentStyle: React.CSSProperties = {
   textAlign: 'center',
   width: '100vw',
   height: '100vh',
-  position: 'fixed',
   flex: 1,
   margin: 'auto',
   marginTop: 50,
