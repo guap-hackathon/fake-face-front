@@ -6,6 +6,7 @@ import { RcFile } from 'antd/es/upload'
 import './DragAndDrop.css'
 import { featureModel } from '../models'
 import { WithFaceStatus } from '../types'
+import { FileList } from './FileList'
 
 const DragAndDrop: React.FC = () => {
   const handleChange: UploadProps<WithFaceStatus>['onChange'] = ({ fileList }) => {
@@ -33,7 +34,7 @@ const DragAndDrop: React.FC = () => {
         beforeUpload={handleBeforeUpload}
         onChange={handleChange}
         multiple
-        showUploadList={true}
+        showUploadList={false}
         style={{
           height: '400px',
           minHeight: '400px',
@@ -50,6 +51,7 @@ const DragAndDrop: React.FC = () => {
         <p>Перетащите его сюда</p>
         <Button icon={<UploadOutlined />}>Выберите файл</Button>
       </Upload.Dragger>
+      <FileList />
     </div>
   )
 }
