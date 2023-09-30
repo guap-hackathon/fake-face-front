@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import DragAndDrop from '../../components/UploadImage/UploadImage'
+import DragAndDrop from '../../components/UploadImage/ui/UploadImage'
 
 const { Content } = Layout
 
