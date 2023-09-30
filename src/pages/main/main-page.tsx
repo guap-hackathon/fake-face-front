@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import { UploadImage } from '../../UploadImage/UploadImage'
+import { UploadImage } from '../../components/Upload/ui/UploadImage'
 
 const { Content } = Layout
 
