@@ -22,7 +22,7 @@ const headerStyle: React.CSSProperties = {
   paddingInline: 50,
   position: 'fixed',
   zIndex: 1,
-  display: 'flex', // Центрируем по горизонтали
+  display: 'flex',
   alignItems: 'center'
 };
 

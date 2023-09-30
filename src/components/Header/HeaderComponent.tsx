@@ -11,7 +11,7 @@ export const HeaderComponent: React.FC = () => {
           width: '100%',
           justifyContent: 'space-between',
           alignContent: 'center',
-          display: 'flex', // Центрируем по горизонтали
+          display: 'flex',
           alignItems: 'center'
         }}>
           <Link to="/">
