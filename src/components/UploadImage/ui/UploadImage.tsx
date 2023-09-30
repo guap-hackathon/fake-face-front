@@ -3,7 +3,7 @@ import { Upload, Button, UploadProps } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { RcFile } from 'antd/es/upload'
 
-import './DragAndDrop.css'
+import './UploadImage.css'
 import { featureModel } from '../models'
 import { WithFaceStatus } from '../types'
 import { FileList } from './FileList'

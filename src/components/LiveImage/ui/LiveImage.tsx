@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from 'antd'
 import axios from 'axios'
+import './LiveImage.css'
 
 export const LiveImage: React.FC = () => {
-  const [, setImage] = useState<string | null>(null)
+  const [image, setImage] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [videoIsStopped, setVideoIsStopped] = useState(false)
+  const [isStreaming, setIsStreaming] = useState(false)
 
   const startCamera = async () => {
     try {
@@ -31,6 +33,7 @@ export const LiveImage: React.FC = () => {
         videoRef.current.srcObject = null
       }
       setVideoIsStopped(true)
+      setIsStreaming(false)
       setImage(null)
     }
   }
@@ -74,42 +77,38 @@ export const LiveImage: React.FC = () => {
     }
   }, [])
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: '#fff'
-      }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-        <div
-          style={{
-            border: '2px solid #1890ff',
-            height: '303px',
-            borderRadius: '10px',
-            marginBottom: '2px',
-            marginRight: '10px',
-            position: 'relative'
-          }}>
-          <video
-            ref={videoRef}
-            style={{ width: '400px', height: '300px', borderRadius: '9px', position: 'relative' }}
-          />
+  const toggleCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      stopCamera()
+    } else {
+      startCamera()
+      setIsStreaming(true)
+    }
+  }
+
+  if (window.innerWidth < 500) {
+    return (
+      <div className="container">
+        <div className="video-container">
+          <video className="video" ref={videoRef} />
         </div>
-        {/* <div style={{ width: '400px', border: '2px solid #1890ff', borderRadius: '10px', position: 'relative' }}>
-          {image && <img src={image} alt="Снимок" style={{ objectFit: 'contain', width: '100%', minWidth: '400px', height: '100%', borderRadius: '8px' }} />}
-          <canvas ref={canvasRef} style={{ display: 'none' }} />
-        </div> */}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={startCamera} style={{ marginRight: '10px' }}>
-          Начать трансляцию
+        <Button onClick={toggleCamera} style={{ width: 'auto' }}>
+          {isStreaming ? 'Остановить трансляцию' : 'Начать трансляцию'}
         </Button>
-        <Button onClick={stopCamera} style={{ marginRight: '10px' }}>
-          Остановить трансляцию
-        </Button>
+        {image && <img className="video-image" src={image} alt="Снимок" />}
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className="container-desc">
+        <div className="video-container-desc">
+          <video className="video" ref={videoRef} />
+        </div>
+        <Button onClick={toggleCamera} style={{ width: 'auto' }}>
+          {isStreaming ? 'Остановить трансляцию' : 'Начать трансляцию'}
+        </Button>
+        {image && <img className="video-image" src={image} alt="Снимок" />}
+      </div>
+    )
+  }
 }
