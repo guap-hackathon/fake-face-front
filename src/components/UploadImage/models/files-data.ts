@@ -1,6 +1,6 @@
 import { createEvent, createStore, sample } from 'effector'
-import { WithFaceStatus } from '../types'
 import { UploadFileStatus } from 'antd/es/upload/interface'
+import { ResponseWithFaceStatus } from '../../../common/types'
 
 type File = {
   faceStatus?: 'real' | 'fake' | 'no_face'
@@ -13,7 +13,7 @@ type File = {
 export const $filesData = createStore<File[] | null>(null)
 
 type ActualizeFilesDataParams = Array<{
-  response?: WithFaceStatus
+  response?: ResponseWithFaceStatus
   name: string
   percent?: number
   status?: UploadFileStatus
@@ -28,8 +28,8 @@ sample({
     return files.map(({ response, name, percent, status }): File => {
       return {
         name,
-        faceStatus: response?.faceStatus,
-        hasFaceStatus: Boolean(response?.faceStatus),
+        faceStatus: response?.face_status,
+        hasFaceStatus: Boolean(response?.face_status),
         isValidated: !(percent === 0 && status == null),
         inProgress: status === 'uploading'
       }

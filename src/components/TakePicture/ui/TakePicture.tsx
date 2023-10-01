@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from 'antd'
-import axios from 'axios'
 import './TakePicture.css'
+import { featureModel } from '../models'
+import { Status } from './Status'
+import { useStore } from 'effector-react'
 
 export const TakePicture: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null)
+  const snapshot = useStore(featureModel.$snapshot)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [isCameraOn, setIsCameraOn] = useState(false)
@@ -43,17 +45,7 @@ export const TakePicture: React.FC = () => {
         ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height)
 
         const capturedImage = canvas.toDataURL('image/png')
-        setImage(capturedImage)
-
-        // Отправляем снимок на бэкенд
-        axios
-          .post('URL_БЭКА', { image: capturedImage })
-          .then((response) => {
-            console.log('Ответ от сервера:', response.data)
-          })
-          .catch((error) => {
-            console.error('Ошибка при отправке изображения на сервер:', error)
-          })
+        featureModel.shapshotCaptured(capturedImage)
       }
     }
   }
@@ -83,7 +75,7 @@ export const TakePicture: React.FC = () => {
           <video ref={videoRef} className="video" />
         </div>
         <div className="imageContainer">
-          {image && <img src={image} alt="Снимок" className="image" />}
+          {snapshot && <img src={snapshot} alt="Снимок" className="image" />}
           <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>
       </div>
@@ -93,6 +85,7 @@ export const TakePicture: React.FC = () => {
         </Button>
         <Button onClick={captureAndUpload}>Сделать снимок</Button>
       </div>
+      <Status />
     </div>
   )
 }

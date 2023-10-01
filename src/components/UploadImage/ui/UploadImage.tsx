@@ -5,11 +5,11 @@ import { RcFile } from 'antd/es/upload'
 
 import './UploadImage.css'
 import { featureModel } from '../models'
-import { WithFaceStatus } from '../types'
-import { FileList } from './FileList'
+import { StatusList } from './StatusList'
+import { ResponseWithFaceStatus } from '../../../common/types'
 
 export const DragAndDrop: React.FC = () => {
-  const handleChange: UploadProps<WithFaceStatus>['onChange'] = ({ fileList }) => {
+  const handleChange: UploadProps<ResponseWithFaceStatus>['onChange'] = ({ fileList }) => {
     console.log('HANDLE CHANGE INFO', fileList)
     featureModel.actualizedFilesData(fileList)
   }
@@ -51,7 +51,7 @@ export const DragAndDrop: React.FC = () => {
         <p>Перетащите его сюда</p>
         <Button icon={<UploadOutlined />}>Выберите файл</Button>
       </Upload.Dragger>
-      <FileList />
+      <StatusList />
     </div>
   )
 }

@@ -1,8 +1,6 @@
 /* styles.css */
 
 .layout {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   color: #fff;
@@ -11,7 +9,6 @@
 .header {
   padding-top: 20px;
   background: #fff;
-  width: 100vw;
   text-align: center;
   color: #fff;
   height: 200px;
@@ -22,10 +19,7 @@
 
 .content {
   text-align: center;
-  width: 100vw;
-  height: 100vh;
   flex: 1;
-  margin: auto;
   margin-top: 50px;
   display: flex;
   align-items: center;

@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from 'antd'
-import axios from 'axios'
 import './LiveImage.css'
+import { featureModel } from '../models'
+import { Status } from './Status'
 
 export const LiveImage: React.FC = () => {
   const [image, setImage] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const [videoIsStopped, setVideoIsStopped] = useState(false)
+  // const [videoIsStopped, setVideoIsStopped] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
 
   const startCamera = async () => {
@@ -17,7 +18,7 @@ export const LiveImage: React.FC = () => {
         videoRef.current.srcObject = stream
         videoRef.current.play()
 
-        captureAndUpload()
+        featureModel.cameraStarted()
       }
     } catch (error) {
       console.error('Ошибка при получении видеопотока:', error)
@@ -32,41 +33,18 @@ export const LiveImage: React.FC = () => {
         tracks.forEach((track) => track.stop())
         videoRef.current.srcObject = null
       }
-      setVideoIsStopped(true)
       setIsStreaming(false)
       setImage(null)
+      featureModel.cameraStopped()
     }
   }
 
-  const captureAndUpload = () => {
-    if (videoIsStopped) {
-      return
-    }
+  useEffect(() => {
     if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext('2d')
-      if (ctx) {
-        canvas.width = videoRef.current.videoWidth
-        canvas.height = videoRef.current.videoHeight
-        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height)
-
-        const capturedImage = canvas.toDataURL('image/png')
-        setImage(capturedImage)
-
-        // Отправляем снимок на бэкенд
-        axios
-          .post('URL_БЭКА', { image: capturedImage })
-          .then((response) => {
-            console.log('Ответ от сервера:', response.data)
-
-            captureAndUpload()
-          })
-          .catch((error) => {
-            console.error('Ошибка при отправке изображения на сервер:', error)
-          })
-      }
+      featureModel.settedVideo(videoRef.current)
+      featureModel.settedCanvas(canvasRef.current)
     }
-  }
+  }, [videoRef.current, canvasRef.current])
 
   useEffect(() => {
     console.log('Компонент монтируется')
@@ -108,6 +86,8 @@ export const LiveImage: React.FC = () => {
           {isStreaming ? 'Остановить трансляцию' : 'Начать трансляцию'}
         </Button>
         {image && <img className="video-image" src={image} alt="Снимок" />}
+        <canvas ref={canvasRef}></canvas>
+        <Status />
       </div>
     )
   }

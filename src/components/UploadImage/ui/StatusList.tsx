@@ -1,9 +1,9 @@
 import { useStore } from 'effector-react'
 import { featureModel } from '../models'
 import { Alert, Space } from 'antd'
-import { FACE_STATUS } from '../const'
+import { FACE_STATUS } from '../../../common/const'
 
-export const FileList: React.FC = () => {
+export const StatusList: React.FC = () => {
   const filesData = useStore(featureModel.$filesData)
 
   if (!filesData) {
