@@ -1,17 +1,9 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { postImage } from '../../../common/api'
 import { captureImage } from '../../../common/utils'
-import { $canvas, $video } from './set-refs'
+import { $cameraPlaying, $canvas, $video, cameraStoppedClicked } from './camera'
 import { ResponseWithFaceStatus } from '../../../common/types'
 import { message } from 'antd'
-
-export const cameraStarted = createEvent()
-
-export const cameraStopped = createEvent()
-
-export const $isStopped = createStore(true)
-  .on(cameraStarted, () => false)
-  .on(cameraStopped, () => true)
 
 export const gettedResponseFromPost = createEvent()
 
@@ -23,6 +15,15 @@ export const postSnapshotFx = createEffect<string | null, { data: ResponseWithFa
     return postImage(snapshot)
   }
 )
+
+sample({
+  clock: postSnapshotFx.fail,
+  target: cameraStoppedClicked
+})
+
+postSnapshotFx.failData.watch((error) => {
+  message.error('Произошла ошибка во время запроса статуса: ' + error.message)
+})
 
 export const captureImageFx = createEffect(
   ({ video, canvas }: { video: HTMLVideoElement | null; canvas: HTMLCanvasElement | null }) => {
@@ -41,11 +42,12 @@ export const $snapshot = createStore<string | null>(null).on(
 )
 
 sample({
-  clock: cameraStarted,
   source: {
     video: $video,
-    canvas: $canvas
+    canvas: $canvas,
+    isPlaying: $cameraPlaying
   },
+  filter: ({ isPlaying }) => isPlaying,
   target: captureImageFx
 })
 
@@ -60,8 +62,8 @@ sample({
   source: {
     video: $video,
     canvas: $canvas,
-    isStopped: $isStopped
+    cameraPlaying: $cameraPlaying
   },
-  filter: ({ isStopped }) => !isStopped,
+  filter: ({ cameraPlaying }) => cameraPlaying,
   target: captureImageFx
 })

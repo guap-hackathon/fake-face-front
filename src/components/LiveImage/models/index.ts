@@ -1,11 +1,22 @@
-import { $faceStatus } from './face-status'
-import { cameraStarted, cameraStopped } from './polling'
-import { settedCanvas, settedVideo } from './set-refs'
+import { $faceStatus, $isFetching } from './face-status'
+import {
+  $cameraPlaying,
+  $canvas,
+  $video,
+  cameraStoppedClicked,
+  cameraToggleClicked,
+  settedCanvas,
+  settedVideo
+} from './camera'
 
 export const featureModel = {
   settedVideo,
   settedCanvas,
-  cameraStarted,
-  cameraStopped,
-  $faceStatus
+  cameraStoppedClicked,
+  cameraToggleClicked,
+  $faceStatus,
+  $video,
+  $canvas,
+  $cameraPlaying,
+  $isFetching
 }

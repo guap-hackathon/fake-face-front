@@ -1,24 +1,22 @@
-import { useStore } from 'effector-react'
-import { featureModel } from '../models'
-import { Alert } from 'antd'
-import { FACE_STATUS } from '../../../common/const'
-import { Loader } from '../../Loader'
+import { FaceStatus } from '../../common/types'
+import { Alert, Space } from 'antd'
+import { FACE_STATUS } from '../../common/const'
+import { Loader } from '../Loader'
 
-export const Status = () => {
-  const faceStatus = useStore(featureModel.$faceStatus)
-  const isFetching = useStore(featureModel.$isFetching)
-  console.log('FACE SATTUS', faceStatus)
+interface Props {
+  status?: FaceStatus | null
+  isFetching: boolean
+}
+
+export const FaceStatusAlert = ({ status, isFetching }: Props) => {
   const time = new Date().toLocaleTimeString()
 
-  if (!faceStatus) return null
-
   let alert
-
-  if (faceStatus.value === FACE_STATUS.REAL) {
+  if (status === FACE_STATUS.REAL) {
     alert = <Alert message={`Реальное фото. Время: ${time}`} type="success" showIcon />
-  } else if (faceStatus.value === FACE_STATUS.FAKE) {
+  } else if (status === FACE_STATUS.FAKE) {
     alert = <Alert message={`Фейковое фото. Время: ${time}`} type="warning" showIcon />
-  } else if (faceStatus.value === FACE_STATUS.NO_FACE) {
+  } else if (status === FACE_STATUS.NO_FACE) {
     alert = <Alert message={`На фото не обнаружено лица. Время: ${time}`} type="info" showIcon />
   } else {
     alert = (
@@ -27,9 +25,9 @@ export const Status = () => {
   }
 
   return (
-    <>
-      {alert}
+    <Space split style={{ marginTop: '10px' }}>
+      {status && alert}
       <Loader spinning={isFetching} />
-    </>
+    </Space>
   )
 }

@@ -1,15 +1,7 @@
 import { createEvent, createStore, sample } from 'effector'
 import { UploadFileStatus } from 'antd/es/upload/interface'
 import { ResponseWithFaceStatus } from '../../../common/types'
-
-type CustomFile = {
-  faceStatus?: 'real' | 'fake' | 'no_face'
-  status?: 'done' | 'error' | 'uploading' | 'removed'
-  name: string
-  hasFaceStatus: boolean
-  isValidated: boolean
-  url?: string
-}
+import { CustomFile } from '../types'
 
 export const $filesData = createStore<CustomFile[] | null>(null)
 
@@ -31,7 +23,7 @@ sample({
       .map(({ response, name, percent, status, originFileObj }): CustomFile => {
         return {
           name,
-          status,
+          inProgress: status === 'uploading',
           faceStatus: response?.face_status,
           hasFaceStatus: Boolean(response?.face_status),
           isValidated: !(percent === 0 && status == null),

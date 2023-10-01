@@ -5,7 +5,6 @@ import { RcFile } from 'antd/es/upload'
 
 import './UploadImage.css'
 import { featureModel } from '../models'
-import { StatusList } from './StatusList'
 import { ResponseWithFaceStatus } from '../../../common/types'
 import { FileTable } from './FileTable'
 
@@ -53,7 +52,6 @@ export const DragAndDrop: React.FC = () => {
         <p>Перетащите его сюда</p>
         <Button icon={<UploadOutlined />}>Выберите файл</Button>
       </Upload.Dragger>
-      <StatusList />
       <FileTable />
     </div>
   )

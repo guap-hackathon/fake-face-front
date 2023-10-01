@@ -1,24 +1,34 @@
 import { createStore, sample } from 'effector'
 import { FaceStatus, ResponseWithFaceStatus } from '../../../common/types'
-import { $isStopped, postSnapshotFx } from './polling'
+import { postSnapshotFx } from './polling'
+import { $cameraPlaying, cameraStoppedClicked } from './camera'
 
-export const $faceStatus = createStore<FaceStatus | null>(null)
+export const $faceStatus = createStore<{ value: FaceStatus } | null>(null).on(
+  cameraStoppedClicked,
+  () => null
+)
 
 postSnapshotFx.doneData.watch(() => console.log('done data'))
-$faceStatus.watch((s) => console.log('face status', s))
 
 const $responseSuccess = createStore<ResponseWithFaceStatus | null>(null).on(
   postSnapshotFx.doneData,
   (_, { data }) => data
 )
-$isStopped.watch((s) => console.log('isStopped', s))
+
+export const $isFetching = postSnapshotFx.pending.on(cameraStoppedClicked, () => false)
+
 sample({
   source: {
     response: $responseSuccess,
-    isStopped: $isStopped
+    isPlaying: $cameraPlaying
   },
-  fn: ({ response }) => response?.face_status || null,
-  filter: ({ isStopped }) => !isStopped,
+  fn: ({ response }) => {
+    if (response?.face_status) {
+      return { value: response.face_status }
+    }
+    return null
+  },
+  filter: ({ isPlaying }) => isPlaying,
   target: $faceStatus,
   greedy: false
 })
