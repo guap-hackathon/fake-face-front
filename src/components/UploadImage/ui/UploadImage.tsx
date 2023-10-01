@@ -7,10 +7,12 @@ import './UploadImage.css'
 import { featureModel } from '../models'
 import { StatusList } from './StatusList'
 import { ResponseWithFaceStatus } from '../../../common/types'
+import { FileTable } from './FileTable'
 
 export const DragAndDrop: React.FC = () => {
   const handleChange: UploadProps<ResponseWithFaceStatus>['onChange'] = ({ fileList }) => {
     console.log('HANDLE CHANGE INFO', fileList)
+    console.log('URL', fileList[0].thumbUrl)
     featureModel.actualizedFilesData(fileList)
   }
 
@@ -52,6 +54,7 @@ export const DragAndDrop: React.FC = () => {
         <Button icon={<UploadOutlined />}>Выберите файл</Button>
       </Upload.Dragger>
       <StatusList />
+      <FileTable />
     </div>
   )
 }
