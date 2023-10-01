@@ -16,8 +16,7 @@ export const LiveImage: React.FC = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true })
       if (videoRef.current) {
         videoRef.current.srcObject = stream
-        videoRef.current.play()
-
+        await videoRef.current.play()
         featureModel.cameraStarted()
       }
     } catch (error) {

@@ -16,7 +16,7 @@ export const $isStopped = createStore(true)
 export const gettedResponseFromPost = createEvent()
 
 export const postSnapshotFx = createEffect<string | null, { data: ResponseWithFaceStatus }>(
-  async (snapshot: string | null) => {
+  async (snapshot) => {
     if (!snapshot) {
       throw new Error('Ошибка при получении снэпшота')
     }
